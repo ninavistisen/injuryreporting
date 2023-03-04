@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Injury Table</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+	<nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+			<li><a href="{{ url_for('table') }}">Injury Table</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Injury Table</h1>
+    </header>
+	<main>
+		<table>
+			<thead>
+				<tr>
+					<th>Player Name</th>
+					<th>Injury Type</th>
+					<th>Date of Injury</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for injury in injuries %}
+				<tr>
+					<td>{{ injury.name }}</td>
+					<td>{{ injury.injury_type }}</td>
+					<td>{{ injury.date }}</td>
+					<td>{{ injury.description }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</main>
+    <footer>
+		<p>&copy; 2023 Athlete Injury Log. All rights reserved.</p>
+		<div class="logo-container">
+			<img src="{{ url_for('static', filename='img/drulogo.png') }}" alt="Danish Rugby Union logo">
+		</div>
+	</footer>
+</body>
+</html>

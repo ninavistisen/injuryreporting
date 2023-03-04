@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Denmark Sevens Injury Reporting</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+			<li><a href="{{ url_for('table') }}">Injury Table</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Denmark Sevens Injury Reporting</h1>
+    </header>    
+	<main>
+		<form id="injury-form">
+			<label for="name">Player Name:</label>
+			<select id="name" name="name" required>
+				<option value="">Select a player</option>
+				<option value="nina">Nina</option>
+				<option value="sidsel">Sidsel</option>
+				<option value="rosa">Rosa</option>
+			</select>
+			<label for="injury-type">Injury Type:</label>
+			<input type="text" id="injury-type" name="injury-type" required>
+			<label for="date">Date of Injury:</label>
+			<input type="date" id="date" name="date" required>
+			<label for="description">Description:</label>
+			<textarea id="description" name="description" rows="4" cols="50" required></textarea>
+			<button type="submit">Submit</button>
+		</form>
+	</main>
+    <footer>
+		<p>&copy; 2023 Athlete Injury Log. All rights reserved.</p>
+		<div class="logo-container">
+			<img src="{{ url_for('static', filename='img/drulogo.png') }}" alt="Danish Rugby Union logo">
+		</div>
+	</footer>
+	<script>
+		$(document).ready(function() {
+			$('#injury-form').submit(function(event) {
+				// Prevent the form from submitting normally
+				event.preventDefault();
+
+				// Get the form data
+				var formData = {
+					'name': $('#name').val(),
+					'injury-type': $('#injury-type').val(),
+					'date': $('#date').val(),
+					'description': $('#description').val()
+				};
+
+				// Send the form data to the Python script
+				$.ajax({
+					type: 'POST',
+					url: 'http://127.0.0.1:5000/submit', // replace with your new URL 
+					data: formData,
+					dataType: 'json',
+					encode: true,
+					success: function(data) {
+						console.log('Success:', data);
+						// Show a success message to the user
+						alert('Injury report submitted successfully!');
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						console.error('Error:', textStatus, errorThrown);
+						// Show an error message to the user
+						alert('There was an error submitting the injury report. Please try again later.');
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>
